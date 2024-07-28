@@ -1,0 +1,252 @@
+# VARIABLES
+A variable is a memory allocated for the storage of specific data and the name associated with the variable is used to work around this reserved block.
+Variables can be given almost any name, such as x, current_temperature, or subject_id. 
+R is case sensitive (e.g., genome_length is different from Genome_length)
+R supports three ways of variable assignment:
+Using equal operator- operators use an arrow or an equal sign to assign values to variables. variable_name = value
+Using the leftward operator- data is copied from right to left. variable_name <- value
+Using the rightward operator- data is copied from left to right. value -> variable_name
+
+# Initialization of variables
+# using equal to operator
+var1 = "hello"
+print(var1)
+
+# using leftward operator
+var2 <- "hello"
+print(var2)
+
+# using rightward operator
+"hello" -> var3
+print(var3)
+
+# Output
+[1] "hello"
+[1] "hello"
+[1] "hello"
+You can also view information on the variable by looking in your Environment window in the RStudio interface.
+
+# <- leftward operator
+x <- 100
+y<-"hello"
+x
+y 
+# Output
+[1] 100
+[1] "hello"
+
+# -> rightward operator
+10 -> z
+z  # Outputs: [1] 10
+"Hello World" ->s
+s  # Outputs: [1] Hello World
+10 -> a -> b
+print(a)  # Outputs: [1] 10
+print(b)  # Outputs: [1] 10
+
+
+# rules for defining variables
+A valid variable name consists of a combination of alphabets, numbers, dot(.), and underscore(_) characters. Example: var.1_ is valid
+Apart from the dot and underscore operators, no other special character is allowed. Example: var$1 or var#1 both are invalid
+Variables can start with alphabets or dot characters. Example: .var or var is valid
+Note that any variable that starts with dot will not be displayed on the environment window. It is a hidden variable.
+The variable should not start with numbers or underscore. Example: 2var or _var is invalid.
+If a variable starts with a dot the next thing after the dot cannot be a number. Example: .3var is invalid
+The variable name should not be a reserved keyword in R. Example: TRUE, FALSE,etc.
+R is case sensitive (e.g., genome_length is different from Genome_length)
+
+height =180
+Height=200
+num_1=20
+num.1=30
+.num=50
+.2var=30 #output: Error: unexpected symbol in ".2var"
+num 1=20 #output: Error: unexpected numeric constant in "num 1"
+height
+Height
+num_1
+num.1
+.num
+# Output
+[1] 180
+[1] 200
+[1] 20
+[1] 30
+[1] 50
+
+ls()
+# Outputs: [1] "a"      "b"      "height" "Height" "num.1"  "num_1"  "s"      "x"      "y"      "z" 
+
+# DATA TYPES
+# Assigning Data Types - numeric, integer, character, logical, factor, raw
+
+#numeric = any numerical value including both int and float
+num=40
+num2=0
+num1=40.3
+num3=-3
+class(num3)  # [1] "numeric"
+class(num1)  # [1] "numeric"
+class(num2)  # [1] "numeric"
+is.integer(num)  # [1] FALSE
+class(num)  # [1] "numeric"
+is.numeric(num)  # [1] TRUE
+All the variables (num, num2, num1, num3) are of the class numeric because they are not explicitly defined as integers with the L suffix.
+
+#Int=whole number, the L indicates to R that it’s an integer
+num4=40L
+class(num4) # [1] "integer"
+is.integer(num4)  # [1] TRUE
+
+#character=for text values or strings, denoted by using quotes (“”) around value
+str_1 = "omics"
+is.character(str_1)  # [1] TRUE
+class(str_1)  # [1] "character"
+
+num_5 = "123"
+is.numeric(num_5)  # [1] FALSE
+class(num_5)  # [1] "character"
+
+#logical=for TRUE and FALSE (the Boolean data type)
+a = TRUE
+class(a)    # [1] "logical"
+is.logical(a)  # [1] TRUE
+
+b = FALSE
+class(b)    # [1] "logical"
+is.logical(b)  # [1] TRUE
+
+#Factor=Used to represent categorical data.
+status=factor(c('male','female'))
+class(status)    # [1] "factor"
+
+#Complex=Represents complex numbers with real and imaginary parts.
+p = 1 + 2i
+p           # [1] 1+2i
+class(p)    # [1] "complex"
+
+# Date Conversion using as.Date()
+date_var <- as.Date("2024-07-24")
+is.Date <- function(x) inherits(x, "Date")
+is.Date(date_var)  # [1] TRUE
+
+#Raw=Represents raw bytes
+raw_var = charToRaw("Welcome to R Programming")
+raw_var    # [1] 57 65 6c 63 6f 6d 65 20 74 6f 20 52 20 50 72 6f 67 72 61 6d 6d 69 6e 67
+class(raw_var)  # [1] "raw"
+
+# Convert Raw Back to Character
+char_var = rawToChar(raw_var)
+char_var  # [1] "Welcome to R Programming"
+class(char_var)  # [1] "character"
+
+
+## Convert different data types in R using as.
+# Assigning an Integer Value
+int_val = 50L
+class(int_val)  # [1] "integer"
+
+# Converting Integer to Character
+string_val = as.character(int_val)
+string_val  # [1] "50"
+class(string_val)  # [1] "character"
+
+# Converting Integer to Numeric
+numeric_val = as.numeric(int_val)
+numeric_val  # [1] 50
+class(numeric_val)  # [1] "numeric"
+
+##  print(), cat(), and paste()  - used for output and string manipulation
+print()
+Used to print objects to the console.
+Can handle various data types and structures (e.g., vectors, lists, data frames).
+Automatically adds a newline at the end of the output.
+print("Hello, World!")  # Outputs: [1] "Hello, World!"
+print(42)               # Outputs: [1] 42
+
+cat()
+Concatenates and outputs objects.
+Does not add quotes around strings.
+Does not add a newline at the end of the output unless explicitly specified.
+Mainly used for simple, formatted text output.
+cat("Hello, World!\n")  # Outputs: Hello, World!
+cat("The value is", 42) # Outputs: The value is 42
+
+paste()
+Concatenates strings together.
+Returns a single string as output.
+Useful for creating strings to be used later.
+Does not print to the console unless wrapped in print() or cat().
+result <- paste("Hello", "World!")
+print(result)  # Outputs: [1] "Hello World!"
+
+Example:
+int_val = 50L
+
+# Using print() with paste()
+print(paste("Original Value:", int_val, "Type:", class(int_val)))
+# Outputs: [1] "Original Value: 50 Type: integer"
+
+# Using print() directly
+print(int_val)
+# Outputs: [1] 50
+
+# Using cat() for formatted output
+cat("Original Value:", int_val, "Type:", class(int_val), "\n")
+# Outputs: Original Value: 50 Type: integer
+
+# Using paste() to create a string
+result <- paste("Original Value:", int_val, "Type:", class(int_val))
+print(result)
+# Outputs: [1] "Original Value: 50 Type: integer"
+
+
+## runif()
+runif() function in R generates random numbers from a uniform distribution. By default, it generates random numbers in the range [0,1].
+To generate 10 random numbers between 0 and 1, you can use the following code:
+random_numbers <- runif(10)
+print(random_numbers)
+#outputs:  [1] 0.7143390 0.9309444 0.8046201 0.1867595 0.7880986 0.5428273 0.8726715 0.9003716 0.2455738 0.2716349
+
+If you want to generate random numbers in a different range, you can specify the min and max arguments in runif(). For example, to generate 10 random numbers between 5 and 10:
+random_numbers_custom_range <- runif(10, min=5, max=10)
+print(random_numbers_custom_range)
+#outputs:  [1] 6.367580 9.122456 5.853179 6.977485 8.591297 7.227898 6.638251 8.105998 7.378569 9.996256
+
+runif
+Purpose: Generates random numbers.
+Usage: runif(n, min = 0, max = 1)
+n: Number of random numbers to generate.
+min: Minimum value (default is 0).
+max: Maximum value (default is 1).
+Functionality: Produces n random numbers from a uniform distribution within the specified range.
+
+## set.seed()
+set.seed
+Purpose: Sets the seed for R’s random number generator.
+Usage: set.seed(seed)
+seed: An integer value used to initialize the random number generator.
+Functionality: Ensures reproducibility of random number generation. When the same seed is set before generating random numbers, the sequence of random numbers will be the same.
+                set.seed is used to ensure that the random number generation can be reproduced.
+
+# Set the seed to 123 and generate 5 random numbers from a normal distribution
+set.seed(123)
+random_num_1 <- rnorm(5)
+print(random_num_1)
+# [1] -0.56047565 -0.23017749  1.55870831  0.07050839  0.12928774
+
+# Set the seed to 42 and generate 5 random numbers from a normal distribution
+set.seed(42)
+random_num_2 <- rnorm(5)
+print(random_num_2)
+# [1]  1.3709584  -0.5646982  0.3631284  0.6328626  0.4042683
+
+# Set the seed to 1000 and generate 5 random numbers from a normal distribution
+set.seed(1000)
+random_num_3 <- rnorm(5)
+print(random_num_3)
+# [1] -0.2502393 -0.2698651  1.1831661 -1.1143086  0.6620047
+
+set.seed() is used to make random number generation reproducible.
+rnorm(5) generates 5 random numbers from a normal distribution.
+By using different seeds, you get different sequences of random numbers, but if you use the same seed, you will get the same sequence every time you run the code.
