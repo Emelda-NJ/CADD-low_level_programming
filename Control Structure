@@ -1,0 +1,200 @@
+# Control Structures in R
+Control structures in R allow for conditional execution of code, looping, and other control flow mechanisms.
+
+IF AND ELSE
+
+1. Basic If Statement
+x <- 5
+y <- 7
+
+# Comparison
+x == y # FALSE
+"Omics" == "Omics" # TRUE
+"Omics" == "omics" # FALSE
+
+# If statement
+if (x > 0) {
+  print("The number is Positive")
+}
+# Output: [1] "The number is Positive"
+
+# If statement
+if (x < 0) {
+  print("The number is Negative")
+}
+print("Have a nice day..!!")
+# Output:
+# [1] "The number is Negative"
+# [1] "Have a nice day..!!"
+
+2. If-Else Statement
+# syntax: if(<condition1>) {
+            do something
+          } else {
+            do something different
+          }
+
+# If-Else statement
+if (!(x == y)) {
+  print("Hello...!!")
+} else {
+  print("How are you..?!!")
+}
+# Output: [1] "Hello...!!"
+
+# If-Else statement
+if (x == y) {
+  print("Hello...!!")
+} else {
+  print("How are you..?!!")
+}
+# Output: [1] "How are you..?!!"
+
+3. Ifelse Function
+# syntax: ifelse(condition,true,false)
+z <- 1:10
+ifelse(z < 5, sqrt(z), 0)
+# Output: [1] 1.000000 1.414214 1.732051 2.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000
+
+4. Nested If-Else Statement
+# syntax: if(<condition1>) {
+            do something
+          } else if(<condition2>)  {
+            do something different
+          } else {
+            do something different
+          }
+
+score <- 75
+
+if (score >= 90) {
+  grade <- "A"
+} else if (score >= 80) {
+  grade <- "B"
+} else if (score >= 70) {
+  grade <- "C"
+} else {
+  grade <- "D"
+}
+
+print(paste("Grade:", grade))
+# Output: [1] "Grade: C"
+
+FOR LOOP
+
+# For Loop
+x <- 1:4
+
+# Simple for loop
+for (i in 1:4) {
+  print(i)
+}
+# Output:
+# [1] 1
+# [1] 2
+# [1] 3
+# [1] 4
+
+# For loop with operations
+for (i in 1:4) {
+  print(i^2)
+}
+# Output:
+# [1] 1
+# [1] 4
+# [1] 9
+# [1] 16
+
+# Iterating over a vector
+number <- c(11, 22, 33, 44, 55, 66, 77, 88)
+for (i in number) {
+  print(i)
+}
+# Output:
+# [1] 11
+# [1] 22
+# [1] 33
+# [1] 44
+# [1] 55
+# [1] 66
+# [1] 77
+# [1] 88
+
+# Counting even numbers
+count <- 0
+for (i in number) {
+  if (i %% 2 == 0) {
+    count <- count + 1
+  }
+}
+print(count)
+# Output: [1] 4
+
+WHILE LOOP
+
+# While Loop
+p <- 0
+while (p < 5) {
+  p <- p + 2
+  print(p)
+}
+# Output:
+# [1] 2
+# [1] 4
+# [1] 6
+
+BREAK AND NEXT
+
+# Break Statement
+nb <- c(11, 22, 33, 44, 55, 0, 66, 77, 88, 99)
+for (i in nb) {
+  if (i == 0) {
+    break
+  }
+  print(i)
+}
+# Output:
+# [1] 11
+# [1] 22
+# [1] 33
+# [1] 44
+# [1] 55
+
+# Next Statement
+for (i in nb) {
+  if (i %% 2 != 0) {
+    next
+  }
+  print(i)
+}
+# Output:
+# [1] 22
+# [1] 44
+# [1] 0
+# [1] 66
+# [1] 88
+
+# NOTE: LOGICAL OPERATORS
+Equality: ==
+Inequality: !=
+Less than or equal: <=
+Greater than or equal: >=
+And: &
+Or: |
+Not: !
+
+# Example Applications in CADD (Computer-Aided Drug Design)
+Conditional Logic
+# Assuming compound is a data frame and threshold is a predefined value
+if (compound$toxicity < threshold) {
+  print("Compound is safe for further testing")
+} else {
+  print("Compound is too toxic")
+}
+
+Loop for Iterating over Compounds
+# Assuming compound_list is a vector of compounds and test_compound is a function
+for (i in 1:length(compound_list)) {
+  result <- test_compound(compound_list[i])
+  print(result)
+}
