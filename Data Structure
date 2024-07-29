@@ -1,0 +1,504 @@
+# DATA STRUCTURE
+TYPES
+Scalar or Variable, Vector (Homogeneous), Matrix (Homogenous), List (Heterogeneous), Data Frame (Heterogeneous), Array (Homogenous)
+1 Dimensional - Vector and List
+2 Dimensional - Matrix and Data Frame
+Multi-Dimensional - Array
+
+# VECTOR
+# Numeric Vector
+Assigning a Single Value:
+num <- 11
+print(num)  # Output: 11
+
+Assigning Multiple Values:
+num <- c(11, 22, 33, 44, 55)
+print(num)  # Output: 11 22 33 44 55
+print(length(num))  # Output: 5
+print(class(num))  # Output: "numeric"
+
+# Character String
+Assigning a String:
+seq <- "ACGATGACGAT"
+print(seq)  # Output: "ACGATGACGAT"
+print(length(seq))  # Output: 1
+
+# Character Vector
+Assigning Multiple Character Values:
+char1 <- c("A", "T", "C", "T", "N", "A")
+print(char1)  # Output: "A" "T" "C" "T" "N" "A"
+print(length(char1))  # Output: 6
+print(class(char1))  # Output: "character"
+
+# NOTE: The c() function is used to combine values into a vector. The c stands for "combine" or "concatenate." 
+The syntax for using the c() function is variable_name <- c(value1, value2, value3, ...)
+
+# FETCHING ELEMENTS
+You can access individual elements, as well as multiple elements, of a vector using square brackets []. 
+Fetching Individual Elements:
+# Numeric Vector
+num <- c(11, 22, 33, 44, 55)
+
+# Fetch the first element
+first_element <- num[1]
+print(first_element)  # Output: 11
+
+# Character Vector
+char1 <- c("A", "T", "C", "T", "N", "A")
+
+# Fetch the sixth element
+sixth_element <- char1[6]
+print(sixth_element)  # Output: "A"
+
+Fetching Multiple Elements:
+# Fetch elements from the 2nd to the 4th position
+subset_range <- num[2:4]
+print(subset_range)  # Output: 22 33 44
+
+# Fetch the 2nd and 4th elements
+subset_specific <- num[c(2, 4)]
+print(subset_specific)  # Output: 22 44
+
+# Exclude the 5th element
+exclude_fifth <- num[-5]
+print(exclude_fifth)  # Output: 11 22 33 44
+
+# Exclude elements from the 5th to the 2nd position (reverse range)
+exclude_range <- char1[-5:-2]
+print(exclude_range)  # Output: "A" "A"
+
+# Exclude the 1st and 4th elements
+exclude_specific <- char1[c(-1, -4)]
+print(exclude_specific)  # Output: "T" "C" "N" "A"
+
+# Creating and Manipulating Vectors
+# Create two numeric vectors
+v1 <- c(1:10)
+v1
+# [1]  1  2  3  4  5  6  7  8  9 10
+
+v2 <- c(101:110)
+v2
+# [1] 101 102 103 104 105 106 107 108 109 110
+
+# Adding the two vectors
+add.result <- v1 + v2
+add.result
+# [1] 102 104 106 108 110 112 114 116 118 120
+
+# Subtracting the two vectors
+sub.result <- v2 - v1
+sub.result
+# [1] 100 100 100 100 100 100 100 100 100 100
+
+# LIST
+Creating Lists with Mixed Data Types:
+Creating a List called 'my_list':
+my_list <- list(12, 23, 4, 2, "5", 67, 8)
+print(class(my_list))  # Output: "list"
+print(my_list)
+# Output: [[1]] 12 [[2]] 23 [[3]] 4 [[4]] 2 [[5]] "5" [[6]] 67 [[7]] 8
+
+Creating a List called 'new_list':
+new_list <- list(100, 22.7, "NGS", TRUE, 33)
+print(new_list)
+# Output: [[1]] 100 [[2]] 22.7 [[3]] "NGS" [[4]] TRUE [[5]] 33
+
+str(new_list)  # Display the structure of the list
+ List of 5
+ $ : num 100
+ $ : num 22.7
+ $ : chr "NGS"
+ $ : logi TRUE
+ $ : num 33
+
+print(class(new_list))  # Output: "list"
+
+# Fetching Elements from a List
+Fetching a Single Element:
+print(new_list[3])  # Output: [[1]] "NGS"
+
+Fetching a Range of Elements:
+print(new_list[2:5])
+# Output: [[1]] 22.7 [[2]] "NGS" [[3]] TRUE [[4]] 33
+
+Fetching Specific Elements:
+print(new_list[c(1, 4)])
+# Output: [[1]] 100 [[2]] TRUE
+
+Excluding Specific Elements:
+print(new_list[-1])
+# Output: [[1]] 22.7 [[2]] "NGS" [[3]] TRUE [[4]] 33
+
+print(new_list[c(-1, -4)])
+# Output: [[1]] 22.7 [[2]] "NGS" [[3]] 33
+
+# Modifying Lists
+Modifying an Element:
+new_list[1] <- "CADD"
+print(new_list)
+# Output: [[1]] "CADD" [[2]] 22.7 [[3]] "NGS" [[4]] TRUE [[5]] 33
+
+Appending Elements:
+new_list <- append(new_list, c(3.14, "DD"))
+print(new_list)
+# Output: [[1]] "CADD" [[2]] 22.7 [[3]] "NGS" [[4]] TRUE [[5]] 33 [[6]] 3.14 [[7]] "DD"
+
+Removing Elements:
+new_list[[7]] <- NULL
+print(new_list)
+# Output: [[1]] "CADD" [[2]] 22.7 [[3]] "NGS" [[4]] TRUE [[5]] 33 [[6]] 3.14
+
+new_list[[5]] <- "Omics"
+print(new_list)
+# Output: [[1]] "CADD" [[2]] 22.7 [[3]] "NGS" [[4]] TRUE [[5]] "Omics" [[6]] 3.14
+
+# Combining Lists
+Combining Two Lists:
+combined_list <- c(my_list, new_list)
+print(combined_list)
+# Output: [[1]] 12 [[2]] 23 [[3]] 4 [[4]] 2 [[5]] "5" [[6]] 67 [[7]] 8 [[8]] "CADD" [[9]] 22.7 [[10]] "NGS" [[11]] TRUE [[12]] "Omics" [[13]] 3.14
+
+print(length(combined_list))  # Output: 13
+
+# Working with Named Elements in Lists
+Creating a List with Named Elements:
+gene_data <- list(
+  gene_name = c("GeneA", "GeneB"),
+  exp = c(10.3, 20.1),
+  is_exp = c(TRUE, FALSE)
+)
+print(gene_data)
+# Output:  $gene_name [1] "GeneA" "GeneB"
+           $exp [1] 10.3 20.1
+           $is_exp [1] TRUE FALSE
+
+# Accessing Elements by Name
+print(gene_data$gene_name[[2]])  # Output: "GeneB"
+print(gene_data[["gene_name"]][[2]])  # Output: "GeneB"
+
+# NOTE: Elements of lists can be accessed using square brackets [].
+        Lists can be combined using the c() function.
+        Named elements in lists can be accessed using the $ operator or double square brackets [[ ]].
+
+# DATA FRAME
+# Create a data frame
+gene_db <- data.frame(
+  gene_name = c("GeneA", "GeneB"),
+  exp = c(10.3, 20.1),
+  is_exp = c(TRUE, FALSE)
+)
+
+# Print the data frame
+print(gene_db)
+# Output:
+   gene_name  exp is_exp
+ 1     GeneA 10.3   TRUE
+ 2     GeneB 20.1  FALSE
+
+# Basic Operations
+Dimensions of the Data Frame:
+dim(gene_db)
+# Output: [1] 2 3  # 2 rows, 3 columns
+
+View the Data Frame (in RStudio):
+View(gene_db)  # This opens the data frame in a separate tab in RStudio for easy viewing
+
+# Accessing Elements in the Data Frame
+Access a Specific Element:
+gene_db[1, 2]
+# Output: 10.3  # Element in the first row, second column
+
+Access a Specific Row:
+gene_db[2, ]
+# Output:
+   gene_name  exp is_exp
+ 2     GeneB 20.1  FALSE
+
+Access a Specific Column:
+gene_db[, 3]
+# Output: [1]  TRUE FALSE  # Entire third column (is_exp)
+
+Access a Specific Element:
+gene_db[2, 1]
+# Output: "GeneB"  # Element in the second row, first column
+
+Access the Entire Data Frame:
+gene_db[, ]
+# Output:
+   gene_name  exp is_exp
+ 1     GeneA 10.3   TRUE
+ 2     GeneB 20.1  FALSE
+
+# Creating a data frame with descriptors
+descriptors <- data.frame(
+  MolecularWeight = c(180.16, 206.28, 151.16),
+  LogP = c(1.2, 2.3, 1.0),
+  HydrogenBondDonors = c(2, 1, 2)
+)
+print(descriptors$MolecularWeight)
+# Output: [1] 180.16 206.28 151.16
+
+# View the data frame (in RStudio)
+View(descriptors)
+
+# Output:	
+    MolecularWeight    LogP    HydrogenBondDonors
+  1      180.16        1.2        2
+  2      206.28        2.3        1
+  3      151.16        1.0        2
+
+# Creating another data frame with chromosome information
+chr <- data.frame(
+  gene_name = c("GeneA", "GeneB", "GeneC"),
+  chromosome = c("chr1", "chr2", "chr3"),
+  str_pos = c(100, 200, 300),
+  end_pos = c(400, 500, 600)
+)
+View(chr)
+# Output:
+    gene_name    chromosome      str_pos      end_pos
+1    GeneA         chr1           100          400
+2    GeneB         chr2           200          500
+3    GeneC         chr3           300          600
+
+# Creating a new vector and adding it as a column
+exp <- c(10.3, 20.1, 22.6)
+print(exp)
+# Output: [1] 10.3 20.1 22.6
+
+chr <- cbind(chr, exp)
+# Check the column names
+print(colnames(chr))
+# Output: [1] "gene_name" "chromosome" "str_pos" "end_pos" "exp"
+
+# Check the class of 'chr'
+print(class(chr))
+# Output: [1] "data.frame"
+
+# Creating a new entry as a data frame and adding it as a row
+newEntry <- data.frame(
+  gene_name = "GeneD",
+  chromosome = "chr4",
+  str_pos = 250,
+  end_pos = 450,
+  exp = 11.22
+)
+View(newEntry)
+# Output
+      gene_name    chromosome      str_pos     end_pos      exp
+1      GeneD          chr4          250          450       11.22
+
+chr <- rbind(chr, newEntry)
+print(dim(chr))
+# Output: [1] 4 5
+
+View(chr)
+# Output
+    gene_name    chromosome      str_pos      end_pos    exp
+1    GeneA         chr1           100          400      10.30
+2    GeneB         chr2           200          500      20.10
+3    GeneC         chr3           300          600      22.60
+4    GeneD         chr4           250          450      11.22
+
+
+# NOTE: Data Frames: Use data.frame() to create data frames.
+        View Data Frames: Use View() in RStudio to view data frames.
+        Add Columns: Use cbind() to add new columns to a data frame.
+        Add Rows: Use rbind() to add new rows to a data frame.
+        Access Columns: Use the $ operator to access specific columns in a data frame.
+        Get Dimensions: Use dim() to get the dimensions (number of rows and columns) of a data frame.
+
+
+# MATRIX
+# Creating and Manipulating Matrices
+1. Creating a Matrix using cbind:
+x <- 11:15
+print(x)
+# Output: [1] 11 12 13 14 15
+
+A <- cbind(x, 1:5)
+print(A)
+# Output:
+      x  
+ [1,] 11 1
+ [2,] 12 2
+ [3,] 13 3
+ [4,] 14 4
+ [5,] 15 5
+
+print(class(A))
+# Output: [1] "matrix"
+
+2. Creating a Matrix using rbind:
+Using letters and LETTERS:
+letters
+# Output: "a" "b" "c" "d" "e" "f" ... "z"
+LETTERS
+# Output: "A" "B" "C" "D" "E" "F" ... "Z"
+
+y <- letters[1:5]
+print(y)
+# Output: "a" "b" "c" "d" "e"
+
+print(class(y))
+# Output: [1] "character"
+
+B <- rbind(y)
+print(B)
+# Output:
+      [,1] [,2] [,3] [,4] [,5]
+ y    "a"  "b"  "c"  "d"  "e"
+
+print(class(B))
+# Output: [1] "matrix"
+
+3. Creating a Matrix using matrix function:
+z <- matrix(1:6, nrow = 2)
+print(z)
+# Output:
+      [,1] [,2] [,3]
+ [1,]    1    3    5
+ [2,]    2    4    6
+
+z <- matrix(1:6, nrow = 2, ncol = 3)
+print(z)
+# Output:
+      [,1] [,2] [,3]
+ [1,]    1    3    5
+ [2,]    2    4    6
+
+print(class(z))
+# Output: [1] "matrix"
+
+4. Converting a Vector to a Matrix by Setting Dimensions:
+A <- 1:6
+print(A)
+# Output: [1] 1 2 3 4 5 6
+
+dim(A) <- c(3, 2)
+print(A)
+# Output:
+#      [,1] [,2]
+# [1,]    1    4
+# [2,]    2    5
+# [3,]    3    6
+
+print(class(A))
+# Output: [1] "matrix"
+
+# Matrix Transposition and Addition
+# ADDITION
+A <- matrix(1:6, nrow = 2)
+print(A)
+# Output:
+      [,1] [,2] [,3]
+ [1,]    1    3    5
+ [2,]    2    4    6
+
+B <- matrix(11:16, nrow = 2)
+print(B)
+# Output:
+      [,1] [,2] [,3]
+ [1,]   11   13   15
+ [2,]   12   14   16
+
+result <- A + B
+print(result)
+# Output:
+      [,1] [,2] [,3]
+ [1,]   12   16   20
+ [2,]   14   18   22
+
+# TRANSPOSITION
+B <- t(B)
+print(B)
+# Output:
+      [,1] [,2]
+ [1,]   11   12
+ [2,]   13   14
+ [3,]   15   16
+
+# Creating and Naming Rows and Columns of a Matrix
+GE <- matrix(c(10.2, 30.4, 3.16, 11.3, 22.4, 44.2), nrow = 2, byrow = TRUE)
+print(GE)
+# Output:
+      [,1] [,2] [,3]
+ [1,] 10.2 30.4  3.16
+ [2,] 11.3 22.4 44.2
+
+rownames(GE) <- c("Sample1", "Sample2")
+colnames(GE) <- c("GeneA", "GeneB", "GeneC")
+print(GE)
+# Output:
+         GeneA GeneB GeneC
+ Sample1  10.2  30.4  3.16
+ Sample2  11.3  22.4  44.2
+
+# NOTE: Creating Matrices: Use matrix(), cbind(), rbind(), or setting dim() on a vector.
+        Accessing Matrix Elements: Use standard indexing [row, column].
+        Transposing Matrices: Use t().
+        Naming Rows and Columns: Use rownames() and colnames().
+
+
+# ARRAY
+# Creating an Array
+my_array <- array(1:24, dim = c(3, 4, 2))
+print(my_array)
+# Output:
+ , , 1
+ 
+      [,1] [,2] [,3] [,4]
+ [1,]    1    4    7   10
+ [2,]    2    5    8   11
+ [3,]    3    6    9   12
+ 
+ , , 2
+ 
+      [,1] [,2] [,3] [,4]
+ [1,]   13   16   19   22
+ [2,]   14   17   20   23
+ [3,]   15   18   21   24
+
+# Sequences in R
+The seq function generates sequences of numbers.
+1. Basic Sequence:
+seq1 <- seq(from = 2, to = 10)
+print(seq1)
+# Output: [1]  2  3  4  5  6  7  8  9 10
+
+2. Sequence with Step Size:
+seq2 <- seq(from = 2, to = 10, by = 0.5)
+print(seq2)
+# Output: [1]  2.0  2.5  3.0  3.5  4.0  4.5  5.0  5.5  6.0  6.5  7.0  7.5  8.0  8.5  9.0  9.5 10.0
+
+3. Sequence with Specified Length:
+seq3 <- seq(from = 2, to = 10, length = 20)
+print(seq3)
+# Output: [1]  2.000000  2.421053  2.842105  3.263158  3.684211  4.105263  4.526316  4.947368  5.368421  5.789474  6.210526  6.631579  7.052632  7.473684  7.894737  8.315789  8.736842  9.157895  9.578947 10.000000
+
+4. Sequence with Decreasing Values:
+seq4 <- seq(from = 50, to = 10, by = -5)
+print(seq4)
+# Output: [1] 50 45 40 35 30 25 20 15 10
+
+# Replication in R
+The rep function replicates the values in a vector.
+1. Basic Replication:
+a1 <- rep(1:4)
+print(a1)
+# Output: [1] 1 2 3 4
+
+2. Replicating with Times Argument:
+a2 <- rep(1:4, times = 2)
+print(a2)
+# Output: [1] 1 2 3 4 1 2 3 4
+
+3. Replicating with Each and Times Arguments:
+a3 <- rep(1:4, each = 3, times = 2)
+print(a3)
+# Output: [1] 1 1 1 2 2 2 3 3 3 4 4 4 1 1 1 2 2 2 3 3 3 4 4 4
+
+# NOTE: Array: Multi-dimensional data structure created using array().
+        Sequences: Generated using seq(), with options for step size (by) and total length (length).
+        Replication: Duplicates elements of vectors using rep(), with options for the number of times to repeat (times) and the number of times each element is repeated (each).
