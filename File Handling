@@ -1,0 +1,145 @@
+# File Handling in R
+File handling in R involves creating, reading, writing, renaming, copying, and deleting files.
+
+1. Creating a File:
+file.create("Demo.txt")
+# Check if the file is created
+file.exists("Demo.txt")
+# Output: [1] TRUE
+
+2. Using Built-in Datasets:
+data() # Lists all available datasets
+data("iris") # Load the iris dataset
+dim(iris) # Get dimensions of the dataset
+# Output: [1] 150   5
+names(iris) # Get column names
+# Output: [1] "Sepal.Length" "Sepal.Width"  "Petal.Length" "Petal.Width"  "Species"
+View(iris) # Opens the dataset in a new tab (only in RStudio)
+head(iris) # First six rows
+# Output
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          5.1         3.5          1.4         0.2  setosa
+2          4.9         3.0          1.4         0.2  setosa
+3          4.7         3.2          1.3         0.2  setosa
+4          4.6         3.1          1.5         0.2  setosa
+5          5.0         3.6          1.4         0.2  setosa
+6          5.4         3.9          1.7         0.4  setosa
+tail(iris) # Last six rows
+# Output
+    Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
+145          6.7         3.3          5.7         2.5 virginica
+146          6.7         3.0          5.2         2.3 virginica
+147          6.3         2.5          5.0         1.9 virginica
+148          6.5         3.0          5.2         2.0 virginica
+149          6.2         3.4          5.4         2.3 virginica
+150          5.9         3.0          5.1         1.8 virginica
+
+3. Writing Data to a File:
+# Ensure the 'utils' package is installed and loaded
+install.packages("utils")
+library(utils)
+
+# Write the first 10 rows of iris dataset to a file
+write.table(x = iris[1:10, ], file = "Iris10.txt")
+# Check if the file is created
+file.exists("Iris10.txt")
+# Output: [1] TRUE
+
+4. Renaming a File:
+# Rename the file
+file.rename("Iris10.txt", "IrisNew10.txt")
+# Check if the old file exists
+file.exists("Iris10.txt")
+# Output: [1] FALSE
+# Check if the new file exists
+file.exists("IrisNew10.txt")
+# Output: [1] TRUE
+
+5. Reading Data from a File:
+## Reading Data from Text Files:
+The read.table() function is used to read data from text files.
+# Read the renamed file
+new_read <- read.table(file = "IrisNew10.txt")
+print(new_read)
+# Output: The content of the first 10 rows of iris dataset
+
+## Reading CSV Files:
+The read.csv() function is used to read CSV (Comma Separated Values) files.
+# Read a CSV file from the local system
+sales <- read.csv("sales_data.csv", header = TRUE)
+print(sales)
+dim(sales) # Get dimensions of the sales dataset
+
+# Read a CSV file from a URL
+onlines_data <- read.csv(url("https://site.cabi.org/wp-content/uploads/Passiflora_visits.csv"))
+head(onlines_data) # Display the first few rows
+
+## Reading Data from Excel Files:
+For reading Excel files, you can use the readxl package.
+# Install and load the readxl package
+install.packages("readxl")
+library(readxl)
+
+# Reading an Excel file
+data_excel <- read_excel("path/to/your/file.xlsx", sheet = 1)
+print(data_excel)
+dim(data_excel) # Get dimensions of the data
+
+## Reading Data from JSON Files:
+For reading JSON files, you can use the jsonlite package.
+# Install and load the jsonlite package
+install.packages("jsonlite")
+library(jsonlite)
+
+# Reading a JSON file
+data_json <- fromJSON("path/to/your/file.json")
+print(data_json)
+
+## Reading Data from SQL Databases:
+You can use the DBI package to read data from SQL databases.
+# Install and load the DBI and RSQLite packages
+install.packages("DBI")
+install.packages("RSQLite")
+library(DBI)
+library(RSQLite)
+
+# Connect to the database
+con <- dbConnect(RSQLite::SQLite(), "path/to/your/database.db")
+
+# Query the database
+data_sql <- dbGetQuery(con, "SELECT * FROM your_table")
+print(data_sql)
+
+# Disconnect from the database
+dbDisconnect(con)
+
+# NOTE: CSV Files: read.csv()
+        Text Files: read.table()
+        Excel Files: read_excel() (from readxl package)
+        JSON Files: fromJSON() (from jsonlite package)
+        SQL Databases: dbGetQuery() (from DBI and RSQLite packages)
+
+6. Listing Files in a Directory:
+list.files()
+# Output: List of files in the current working directory
+
+7. Copying a File:
+# Example for copying a file from one directory to another (path example)
+file.copy("D:/source_path/file.txt", "E:/destination_path/file.txt")
+
+8. Creating and Checking a Directory:
+# Create a new directory
+dir.create("CADD4")
+# Check if the directory exists
+dir.exists("CADD4")
+# Output: [1] TRUE
+
+# NOTE: Creating Files: file.create()
+        Renaming Files: file.rename()
+        Checking Existence: file.exists()
+        Writing Data: write.table()
+        Reading Data: read.table(), read.csv(), read_excel()
+        Listing Files: list.files()
+        Copying Files: file.copy()
+        Creating Directories: dir.create()
+        Checking Directories: dir.exists()
