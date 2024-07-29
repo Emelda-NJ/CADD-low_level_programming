@@ -1,0 +1,132 @@
+# FUNCTION
+# Types in R: Built-in and User-defined
+
+## BUILT-IN FUNCTIONS
+R provides a plethora of built-in functions for various tasks such as mathematical calculations, data manipulation, and statistical analysis. Here are a few examples:
+
+# Print function
+x <- 10
+print(x)
+# Output: [1] 10
+
+# Sum with missing values removed
+x <- c(11, 32, 43, 28, 24, NA, 22)
+# na.rm means remove NA
+sum(x, na.rm = TRUE)
+# Output: [1] 160
+
+# Sort in decreasing order
+sort(x, decreasing = TRUE)
+# Output: [1] 43 32 28 24 22 11 NA
+
+# Mean with missing values removed
+mean(x, na.rm = TRUE)
+# Output: [1] 26.66667
+
+# Mean with trimming
+mean(x, na.rm = TRUE, trim = 0.3)
+# Output: [1] 28
+
+# Mathematical functions
+y <- c(1:10)
+y # Ouput: [1]  1  2  3  4  5  6  7  8  9 10
+sqrt(y)
+# Output: [1] 1.000000 1.414214 1.732051 2.000000 2.236068 2.449490 2.645751 2.828427 3.000000 3.162278
+
+log(2)
+# Output: [1] 0.6931472
+
+exp(0.6931472)
+# Output: [1] 2
+
+log10(100)
+# Output: [1] 2
+
+log(100, 10)
+# Output: [1] 2
+
+## USER-DEFINED FUNCTIONS
+User-defined functions allow you to create reusable code blocks for specific tasks. Here are some examples:
+
+1. Function to Calculate the Area of a Circle
+area_circle <- function(radius) {
+  area <- pi * radius^2
+  return(area)
+}
+
+# Calling the function
+area_circle(5)
+# Output: [1] 78.53982
+
+area_circle(10)
+# Output: [1] 314.1593
+
+2. Function to Add Two Numbers
+add <- function(a, b = 100) {
+  sum <- a + b
+  return(sum)
+}
+
+# Calling the function
+add(20)
+# Output: [1] 120
+
+add(20, 30)
+# Output: [1] 50
+
+3. Function with Default Argument
+my_fun <- function(country = "INDIA") {
+  paste("I am from", country)
+}
+
+# Calling the function
+my_fun()
+# Output: [1] "I am from INDIA"
+
+my_fun("USA")
+# Output: [1] "I am from USA"
+
+4. Function to Calculate Mean and Standard Deviation
+calculate_stat <- function(data) {
+  mean_value <- mean(data)
+  sd_value <- sd(data)
+  return(c(mean = mean_value, sd = sd_value))
+}
+
+sample_data <- c(10, 20, 30, 40, 50, 60)
+
+# Calling the function
+calculate_stat(sample_data)
+# Output:      mean        sd 
+#             35.00000    18.70829
+
+5. Function to Calculate Molecular Weight
+cal_mol_wt <- function(composition) {
+  atomic_wt <- c(C = 12.01, H = 1.01, O = 16.00, N = 14.01)
+  mol_wt <- sum(atomic_wt[names(composition)] * composition)
+  return(mol_wt)
+}
+
+# Calling the function
+composition <- c(C = 6, H = 12, O = 6)
+
+print(paste("Molecular weight:", cal_mol_wt(composition)))
+# Output: [1] "Molecular weight: 180.18"
+
+6. Function to Check if a Compound is Drug-like
+is_drug_like <- function(mw, logP, h_donors, h_acceptors) {
+  if (mw <= 500 & logP <= 5 & h_donors <= 5 & h_acceptors <= 10) {
+    return(TRUE)
+  } else {
+    return(FALSE)
+  }
+}
+
+# Example usage
+mw <- 450
+logP <- 3.5
+h_donors <- 2
+h_acceptors <- 8
+
+print(paste("Is the compound drug-like?", is_drug_like(mw, logP, h_donors, h_acceptors)))
+# Output: [1] "Is the compound drug-like? TRUE"
