@@ -56,10 +56,25 @@ pheno_data <- data.frame(Group=c(rep("Control", 5), rep("Treatment", 5)))
 # Converts the phenotype data to an AnnotatedDataFrame object
 pd <- new("AnnotatedDataFrame", data=pheno_data)
 # NOTE: pd outputs metadata of the data set
+Output:
+An object of class 'AnnotatedDataFrame'
+  rowNames: 1 2 ... 10 (10 total)
+  varLabels: Group
+  varMetadata: labelDescription
+
 # Creates an ExpressionSet object that combines expression data and annotated phenotype data
 eset <- ExpressionSet(assayData=expression_data, phenoData=pd)
 # Prints a summary of the ExpressionSet object
 print(eset)
+Output:
+ExpressionSet (storageMode: lockedEnvironment)
+assayData: 10 features, 10 samples 
+  element names: exprs 
+protocolData: none
+phenoData: none
+featureData: none
+experimentData: use 'experimentData(object)'
+Annotation:  
 
 # Details:
 - rnorm(100) generates 100 random numbers from a standard normal distribution (mean = 0, sd = 1).
