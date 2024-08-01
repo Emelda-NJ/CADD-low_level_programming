@@ -1,0 +1,133 @@
+# CRAN and Bioconductor
+R provides a comprehensive ecosystem of packages available through CRAN (Comprehensive R Archive Network) and Bioconductor for various tasks, especially in bioinformatics.
+
+# Installing and Loading Packages
+
+1. CRAN Packages
+To install and load a CRAN package, use install.packages and library functions.
+
+# Install the 'stringr' package
+install.packages("stringr")
+# Load the 'stringr' package
+library(stringr)
+
+# Example usage
+# Create a vector of names
+name_vector <- c("Seeta M", "Harry S", "Myra S", "Dolly P")
+# Extract the first name from each full name in the vector
+first_name <- str_extract(name_vector, "\\b\\w+\\b")
+# Print the extracted first names
+print(first_name)
+
+# Output: [1] "Seeta" "Harry" "Myra"  "Dolly"
+
+# NOTE: str_extract is a function from the stringr package that extracts the first instance of a pattern from each string in a vector.
+The pattern \\b\\w+\\b is a regular expression used to match the first word in each string.
+\\b denotes a word boundary, ensuring the match starts at the beginning of a word.
+\\w+ matches one or more word characters (letters, digits, and underscores).
+Another \\b ensures the match ends at the word boundary.
+This regular expression effectively extracts the first word from each string in name_vector.
+
+2. Bioconductor Packages
+Bioconductor is a project that provides tools for the analysis and comprehension of high-throughput genomic data.
+
+# Install the BiocManager package if not already installed
+if (!require("BiocManager", quietly = TRUE)) 
+  install.packages("BiocManager")
+
+# Install the 'Biobase' package
+BiocManager::install("Biobase")
+# Load the 'Biobase' package
+library(Biobase)
+
+# Example usage
+This code demonstrates how to create an ExpressionSet object, which is a common data structure used in Bioconductor for storing and managing high-throughput genomic data;
+This integration of expression data and phenotype data into a structured ExpressionSet object is a powerful tool for managing and analyzing genomic data in R using Bioconductor.
+# Ensures reproducibility of random number generation
+set.seed(123)
+# Generates a 10x10 matrix of random numbers (gene expression data)
+expression_data <- matrix(rnorm(100), ncol=10)
+# Assigns column names to the expression data matrix
+colnames(expression_data) <- paste0("Sample", 1:10)
+# Creates phenotype data indicating which samples are 'Control' and 'Treatment'
+pheno_data <- data.frame(Group=c(rep("Control", 5), rep("Treatment", 5)))
+
+# Annotated DataFrame
+# Converts the phenotype data to an AnnotatedDataFrame object
+pd <- new("AnnotatedDataFrame", data=pheno_data)
+# NOTE: pd outputs metadata of the data set
+# Creates an ExpressionSet object that combines expression data and annotated phenotype data
+eset <- ExpressionSet(assayData=expression_data, phenoData=pd)
+# Prints a summary of the ExpressionSet object
+print(eset)
+
+# Details:
+- rnorm(100) generates 100 random numbers from a standard normal distribution (mean = 0, sd = 1).
+- matrix(..., ncol=10) arranges these 100 numbers into a matrix with 10 columns. The resulting matrix has 10 columns and 10 rows.
+- paste0("Sample", 1:10) creates a vector of strings: "Sample1", "Sample2", ..., "Sample10". These strings are set as the column names of the expression_data matrix.
+- rep("Control", 5) creates a vector with 5 "Control" entries.
+- rep("Treatment", 5) creates a vector with 5 "Treatment" entries.
+- These vectors are combined into a single vector and assigned to the Group column of the pheno_data data frame.
+- AnnotatedDataFrame is a class used in Bioconductor to store phenotype data with additional annotation.
+- ExpressionSet is a class used in Bioconductor to encapsulate both the assay data (expression data) and the phenotype data.
+- assayData=expression_data assigns the expression data matrix to the ExpressionSet.
+- phenoData=pd assigns the annotated phenotype data to the ExpressionSet.
+
+3. GRanges for Genomic Ranges
+GRanges is used for representing and manipulating genomic ranges and their associated data.
+
+# Load the 'GenomicRanges' package
+BiocManager::install("GenomicRanges")
+library(GenomicRanges)
+
+# Example usage
+# Create the GRanges Object
+The GRanges object is created using the GRanges constructor. This object represents genomic ranges and can store additional metadata.
+- seqnames (Sequence Names): This argument specifies the chromosome names (or sequence names) for each range. It uses the Rle (Run-Length Encoding) class to store these names efficiently.
+In the example, the first 3 ranges belong to "chr1" and the next 2 ranges belong to "chr2".
+- ranges (IRanges Object): This argument specifies the start positions and widths of the genomic ranges. The IRanges constructor is used to create this object.
+In the example, this creates 5 ranges starting at positions 1, 2, 3, 4, and 5, each with a width of 10 bases.
+- strand (Strand Information): This argument specifies the strand information for each range. It uses the Rle class with the strand function to create strand information.
+In the example, this specifies the strand information as "+", "-", "*", "+", and "-" for the 5 ranges.
+
+The code creates a GRanges object representing 5 genomic ranges across two chromosomes (chr1 and chr2) with specific start positions, widths, and strand information. 
+This object is printed to display the genomic ranges and their associated metadata.
+gr <- GRanges(seqnames=Rle(c("chr1", "chr2"), c(3, 2)),
+              ranges=IRanges(1:5, width=10),
+              strand=Rle(strand(c("+", "-", "*", "+", "-"))))
+print(gr)
+
+# Output:
+GRanges object with 5 ranges and 0 metadata columns:
+      seqnames    ranges strand
+         <Rle> <IRanges>  <Rle>
+  [1]     chr1      1-10      +
+  [2]     chr1      2-11      -
+  [3]     chr1      3-12      *
+  [4]     chr2      4-13      +
+  [5]     chr2      5-14      -
+
+4. Data Manipulation with dplyr
+The dplyr package is used for data manipulation. Key functions include select, filter, arrange, mutate, group_by, and summarise.
+
+# Install and load the 'dplyr' package
+install.packages("dplyr")
+library(dplyr)
+
+# Example usage with iris dataset
+data(iris)
+
+# Filter data
+filtered_data <- iris %>%
+  select(Sepal.Length, Sepal.Width) %>%
+  filter(Sepal.Length > 5)
+
+print(filtered_data)
+print(dim(filtered_data))
+print(dim(iris))
+
+# NOTE: The %>% operator is known as the pipe operator and is used to chain together multiple functions.
+iris %>%: This starts the pipeline with the iris dataset.
+select(Sepal.Length, Sepal.Width): This selects only the Sepal.Length and Sepal.Width columns from the iris dataset.
+filter(Sepal.Length > 5): This filters the rows of the dataset to keep only those where Sepal.Length is greater than 5.
+prints the filtered_data dataset, which contains only the Sepal.Length and Sepal.Width columns for rows where Sepal.Length is greater than 5.
