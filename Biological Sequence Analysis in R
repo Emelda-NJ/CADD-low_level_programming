@@ -1,0 +1,170 @@
+Step 1: Setting Up the Environment
+# From Bioconductor
+if (!require("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+
+BiocManager::install("Biostrings")
+library(Biostrings)
+
+# From CRAN
+install.packages("seqinr")
+library(seqinr)
+# These libraries are used for biological sequence analysis in R. Biostrings provides efficient tools for string matching, sequence analysis, and alignment. seqinr is used for sequence retrieval and analysis.
+
+Step 2: Handling DNA Sequences
+dna_seq="ATCAGTAGCAAGTACAGATAGACAGT"
+class(dna_seq)  # Output: [1] "character"
+length(dna_seq)  # Output: [1] 1
+
+Step 3: Reading FASTA Files
+seq_info=read.fasta(file = "chr20.fasta")
+head(seq_info)
+class(seq_info)
+tail(seq_info)
+# The read.fasta function reads a FASTA file and returns a list of sequences. head and tail functions show the beginning and end of the list, respectively.
+
+Step 4: Pairwise Alignment
+BiocManager::install("pwalign")
+library(pwalign)
+# Used to install the pwalign package from Bioconductor. This package is used for performing pairwise sequence alignments. It provides functions to align two sequences and determine their similarity.
+# The package allows you to score alignments based on substitution matrices and gap penalties, helping to identify the best alignment between sequences.
+
+seq1=DNAString("ATCGATGACAGTAGACAGTA")
+class(seq1) # Output: [1] "DNAString"
+                      attr(,"package")
+                      [1] "Biostrings"
+seq2=DNAString("ATCAGACAGTAGATGACAGT")
+alignment_result=pairwiseAlignment(seq1,seq2)
+alignment_result
+# Output:
+Global PairwiseAlignmentsSingleSubject (1 of 1)
+pattern: ATCGATGACAGTAGA---CAGTA
+subject: ATCA--GACAGTAGATGACAGT-
+score: -28.19119 
+# This code aligns two DNA sequences using the pairwiseAlignment function from the Biostrings package.
+
+Step 5: Multiple Sequence Alignment
+BiocManager::install("msa")
+library(msa)
+# The msa package provides tools for performing multiple sequence alignments (MSA) of DNA, RNA, or protein sequences using different algorithms, such as ClustalW, ClustalOmega, and MUSCLE.
+
+protein_seq=AAStringSet(c("MIRVIAAVL", "IAAVLIAIVL", "MLRVIALIA"))
+print(protein_seq)
+# Output:
+AAStringSet object of length 3:
+    width seq
+[1]     9 MIRVIAAVL
+[2]    10 IAAVLIAIVL
+[3]     9 MLRVIALIA
+align_prt=msa(protein_seq,method = "ClustalOmega") # Output: using Gonnet
+print(align_prt)
+# Output:
+ClustalOmega 1.2.0 
+Call:
+   msa(protein_seq, method = "ClustalOmega")
+MsaAAMultipleAlignment with 3 rows and 14 columns
+    aln 
+[1] MLRVIALIA-----
+[2] MIRVIAAVL-----
+[3] ----IAAVLIAIVL
+Con M?RVIAAVL----- 
+
+seq1="ATCGATGACAGTAGACAGTA"
+seq2="ATCGATCAGTAGACAGTAGA"
+seq3="ACAGTAGACAGTAATCGATG"
+align_dna=msa(c(seq1,seq2,seq3),type="dna") # Output: use default substitution matrix
+print(align_dna)
+# Output:
+CLUSTAL 2.1  
+Call:
+   msa(c(seq1, seq2, seq3), type = "dna")
+MsaDNAMultipleAlignment with 3 rows and 27 columns
+    aln 
+[1] ATCGATGACAGTAGACAGTA-------
+[2] ATCGAT--CAGTAGACAGTAGA-----
+[3] -------ACAGTAGACAGTAATCGATG
+Con ATCGAT-ACAGTAGACAGTA??----- 
+# msa is used for multiple sequence alignment. AAStringSet creates a set of amino acid sequences for alignment using the ClustalOmega method. Similarly, DNA sequences are aligned using the msa function.
+# msa(): Main function to perform multiple sequence alignment.
+# msaClustalW(): Uses ClustalW algorithm for MSA.
+# msaClustalOmega(): Uses ClustalOmega algorithm for MSA.
+# msaMuscle(): Uses MUSCLE algorithm for MSA.
+
+Step 6: Frequency Table of Bases
+freq_table=table(s2c(dna_seq))
+freq_table
+# Output:
+ A  C  G  T 
+11  4  6  5 
+
+# for fasta file
+table(seq_info)
+# The frequency of each unique base in the DNA sequence is calculated using the table function. s2c converts a string to a character vector.
+
+Step 7: Working with PDB Files
+install.packages("bio3d")
+library(bio3d)
+
+# Download a PDB file (e.g., PDB ID "1AKE" for adenylate kinase)
+pdb_id <- "1AKE"
+pdb_file <- get.pdb(pdb_id, path = ".")
+# Read the downloaded PDB file
+pdb_data <- read.pdb(pdb_file)  # Output:  PDB has ALT records, taking A only, rm.alt=TRUE
+# Print the summary of the PDB file
+print(summary(pdb_data))
+# Output:
+Call:  read.pdb(file = pdb_file)
+
+   Total Models#: 1
+     Total Atoms#: 3804,  XYZs#: 11412  Chains#: 2  (values: A B)
+
+     Protein Atoms#: 3312  (residues/Calpha atoms#: 428)
+     Nucleic acid Atoms#: 0  (residues/phosphate atoms#: 0)
+
+     Non-protein/nucleic Atoms#: 492  (residues: 380)
+     Non-protein/nucleic resid values: [ AP5 (2), HOH (378) ]
+
++ attr: atom, xyz, seqres, helix, sheet,
+        calpha, remark, call
+    nmodel      natom       nxyz    nchains      nprot  nprot.res     nother nother.res 
+         1       3804      11412          2       3312        428        492        380 
+
+# Extract the xyz coordinates
+xyz <- pdb_data$xyz
+print(xyz)
+# Output:
+   Total Frames#: 1
+   Total XYZs#:   11412,  (Atoms#:  3804)
+
+    [1]  26.981  53.977  40.085  <...>  34.364  -6.362  12.342  [11412] 
+
++ attr: Matrix DIM = 1 x 11412
+
+# Check the structure and dimensions of the xyz data
+print(dim(xyz))  # Output: [1]     1 11412
+# The bio3d library is used to work with PDB files, which contain 3D structures of proteins and other biological molecules. This code downloads a PDB file, reads it, and extracts the atomic coordinates.
+
+Step 8: Finding Motifs and Reverse Complement
+sequence=DNAString("ATCATGCGCTAGACGATAGACGATAGACAGTAGCAGATA")
+motif=DNAString("TGCG")
+motif_position=matchPattern(motif,sequence)
+motif_position
+# Output:
+Views on a 39-letter DNAString subject
+subject: ATCATGCGCTAGACGATAGACGATAGACAGTAGCAGATA
+views:
+      start end width
+  [1]     5   8     4 [TGCG]
+
+rev_comp=reverseComplement(sequence)
+rev_comp
+# Output:
+39-letter DNAString object
+seq: TATCTGCTACTGTCTATCGTCTATCGTCTAGCGCATGAT
+# This code finds the positions of a motif within a DNA sequence and computes its reverse complement using Biostrings.
+
+Step 9: GC Content Calculation
+gc_content <- GC(s2c(dna_sequence))
+print(gc_content)
+# Output: [1] 0.4358974
+# The GC function from seqinr calculates the GC content of a DNA sequence. GC content is the percentage of guanine (G) and cytosine (C) bases in the DNA sequence.
