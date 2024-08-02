@@ -91,11 +91,19 @@ Annotation:
 3. GRanges for Genomic Ranges
 GRanges is used for representing and manipulating genomic ranges and their associated data.
 
-# Load the 'GenomicRanges' package
-BiocManager::install("GenomicRanges")
+# Install BiocManager if not already installed
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+  install.packages("BiocManager")
+}
+# Install GenomicRanges if not already installed
+if (!requireNamespace("GenomicRanges", quietly = TRUE)) {
+  BiocManager::install("GenomicRanges")
+}
+# Load the GenomicRanges library
 library(GenomicRanges)
 
-# Example usage
+
+# Example 1
 # Create the GRanges Object
 The GRanges object is created using the GRanges constructor. This object represents genomic ranges and can store additional metadata.
 - seqnames (Sequence Names): This argument specifies the chromosome names (or sequence names) for each range. It uses the Rle (Run-Length Encoding) class to store these names efficiently.
@@ -122,6 +130,71 @@ GRanges object with 5 ranges and 0 metadata columns:
   [4]     chr2      4-13      +
   [5]     chr2      5-14      -
 
+
+# Example 2
+This block of code defines two sets of genomic ranges using the GRanges class from the GenomicRanges package.
+# Define genomic ranges
+gr <- GRanges(seqnames = Rle(c("chr1", "chr1", "chr2")),
+              ranges = IRanges(start = c(100, 300, 150), end = c(200, 350, 250)),
+              strand = Rle(c("+", "-", "+")),
+              score = c(5.1, 2.2, 3.8))
+print(gr)
+# Output:
+GRanges object with 3 ranges and 1 metadata column:
+seqnames ranges strand | score
+   <Rle> <IRanges> <Rle> | <numeric>
+[1] chr1 100-200 + | 5.1
+[2] chr1 300-350 - | 2.2
+[3] chr2 150-250 + | 3.8
+seqinfo: 2 sequences from an unspecified genome; no seqlengths
+
+# Define another set of genomic ranges
+gr2 <- GRanges(seqnames = Rle(c("chr1", "chr2")),
+               ranges = IRanges(start = c(150, 200), end = c(250, 300)),
+               strand = Rle(c("+", "+")))
+print(gr2)
+# Output:
+GRanges object with 2 ranges and 0 metadata columns:
+seqnames ranges strand
+   <Rle> <IRanges> <Rle>
+[1] chr1 150-250 +
+[2] chr2 200-300 +
+seqinfo: 2 sequences from an unspecified genome; no seqlengths
+
+
+This block of code finds overlaps between the two sets of genomic ranges (gr and gr2) and prints the results.
+# Find overlaps between gr and gr2
+overlaps <- findOverlaps(gr, gr2)
+
+# Print the overlaps
+print(overlaps)
+# Output:
+Hits object with 2 hits and 0 metadata columns:
+  queryHits subjectHits
+     <integer> <integer>
+[1]          1           1
+[2]          3           2
+queryLength: 3 / subjectLength: 2
+
+
+This block of code annotates the genomic ranges with additional metadata and subsets the ranges based on a condition.
+# Annotate with additional metadata
+mcols(gr)$gene <- c("gene1", "gene2", "gene3")
+
+# Subset ranges based on a condition
+subset_gr <- gr[score(gr) > 3]
+
+# Print the subset of genomic ranges
+print(subset_gr)
+# Output:
+GRanges object with 2 ranges and 2 metadata columns:
+seqnames ranges strand | score gene
+   <Rle> <IRanges> <Rle> | <numeric> <character>
+[1] chr1 100-200 + | 5.1 gene1
+[2] chr2 150-250 + | 3.8 gene3
+seqinfo: 2 sequences from an unspecified genome; no seqlengths
+
+
 4. Data Manipulation with dplyr
 The dplyr package is used for data manipulation. Key functions include select, filter, arrange, mutate, group_by, and summarise.
 
@@ -131,6 +204,7 @@ library(dplyr)
 
 # Example usage with iris dataset
 data(iris)
+View(iris)
 
 # Filter data
 filtered_data <- iris %>%
@@ -146,3 +220,65 @@ iris %>%: This starts the pipeline with the iris dataset.
 select(Sepal.Length, Sepal.Width): This selects only the Sepal.Length and Sepal.Width columns from the iris dataset.
 filter(Sepal.Length > 5): This filters the rows of the dataset to keep only those where Sepal.Length is greater than 5.
 prints the filtered_data dataset, which contains only the Sepal.Length and Sepal.Width columns for rows where Sepal.Length is greater than 5.
+
+# Arrange data
+# Arrange data by Petal.Length in descending order
+arrange_data <- iris %>%
+  arrange(desc(Petal.Length))
+View(arrange_data)
+dim(arrange_data)
+# Output:
+This will show the iris dataset arranged by Petal.Length in ascending order with dimensions (150, 5)
+
+# Arrange data by Petal.Length in ascending order
+arrange_data <- iris %>%
+  arrange(Petal.Length)
+View(arrange_data)
+dim(arrange_data) # Output: [1] 150 5
+
+# Mutate data
+# Mutate data to add a new column total_length
+mutate_data <- iris %>%
+  arrange(desc(Petal.Length)) %>%
+  mutate(total_length = Sepal.Length + Petal.Length)
+View(mutate_data)
+dim(mutate_data) # Output: [1] 150 6
+# Output:
+The mutate_data will have an additional column total_length, which is the sum of Sepal.Length and Petal.Length. The dimensions will be (150, 6).
+names(mutate_data)
+# Output: [1] "Sepal.Length" "Sepal.width" "Petal. Length" "Petal.width" "Species" "total length"
+
+# Grouping and summarizing data by Species
+summarise_iris <- iris %>%
+  group_by(Species)
+print(summarise_iris)
+# Output:
+ A tibble: 150 x 5
+ Groups: Species [3]
+     Sepal.Length   Sepal.Width   Petal.Length   Petal.Width     Species
+       <dbl>          <dbl>         <dbl>           <dbl>         <fct>
+ 1      5.1            3.5           1.4             0.2          setosa
+ 2      4.9            3.0           1.4             0.2          setosa
+ 3      4.7            3.2           1.3             0.2          setosa
+ 4      4.6            3.1           1.5             0.2          setosa
+ 5      5.0            3.6           1.4             0.2          setosa
+ 6      5.4            3.9           1.7             0.4          setosa
+ 7      4.6            3.4           1.4             0.3          setosa
+ 8      5.0            3.4           1.5             0.2          setosa
+ 9      4.4            2.9           1.4             0.2          setosa
+ 10     4.9            3.1           1.5             0.1          setosa
+ 140 more rows
+
+summarise_iris <- iris %>%
+  group_by(Species) %>%
+  summarise(avg_mean = mean(Sepal.Length))
+View(summarise_iris)
+dim(summarise_iris)  # Output: [1] 150 5
+print(summarise_iris)
+# Output:
+# A tibble: 3 × 2
+  Species    avg_mean
+  <fct>        <dbl>
+1 setosa        5.01
+2 versicolor    5.94
+3 virginica     6.59
