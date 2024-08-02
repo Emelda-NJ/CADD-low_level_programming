@@ -1,0 +1,105 @@
+ggplot2 and Basic Plotting in R
+ggplot2 is a widely-used package for creating sophisticated and customizable visualizations using a grammar of graphics approach:
+
+install.packages("ggplot2")
+install.packages("fansi")
+library(fansi)
+library(ggplot2)
+
+Basic Plots
+x = c(11, 22, 33, 44, 55, 66, 77, 88, 99)
+plot(x)
+# This creates a simple plot of the values in x.
+
+Customized Plot:
+plot(x, xlab = "Sample", ylab = "Count", main = "Genomic data", col = "red", pch = 24, xlim = c(1, 10), ylim = c(10, 100), cex = 1)
+# NOTE: xlab and ylab: x and y axis labels
+        main: title.
+        col: Color of the points.
+        pch: Plotting character (shape of points). 19=circle, 18=diamond, 0=emptysquare, 11=star, 24=emptytriangle, 15=square
+        xlim, ylim: Limits for the x and y axes.
+        cex: Size of the points.
+
+Line Plot
+x - independent variable
+y- dependent variable
+x = c(11, 22, 33, 44)
+y = c(80, 60, 40, 20)
+plot(x, y, type = "b")
+# type = "b": Both points and lines.
+# type = "l": Only lines.
+
+Sinusoidal Plot
+x = seq(-pi, pi, 0.1)
+y = sin(x)
+plot(x, y)
+
+Multiple Lines on a Plot
+x = 1:10
+y1 = x^2
+y2 = 2*x + 5
+plot(x, y1, type = "b", col = "blue", xlab = "X", ylab = "Y", main = "Two DT")
+# add one more Data
+lines(x, y2, type = "b", col = "red", pch = 15)
+legend("topright", legend = c("dataset1", "dataset2"), col = c("blue", "red"), lty = 1)
+# NOTE: type = "b": Both points and lines.
+        lines(): Adds another line to the existing plot.
+        legend(): Adds a legend to the plot.
+
+Pie Chart
+x = c(210, 450, 250, 100, 50, 90)
+names(x) = c("CADD", "C", "NGS", "SQL", "AWS", "Python")
+png(file = "piechart.png")
+pie(x, labels = names(x), main = "Languages", radius = -1)
+dev.off()
+# NOTE: names(x): Names for the slices.
+        png(), dev.off(): Save the plot as a PNG file.
+install.packages("plotrix") is used for pie 3D-structure illustration
+
+MA Plot
+An MA plot is a graphical representation used to visualize differences in measurements between two samples. 
+It plots the log ratio (M) on the y-axis and the log average (A) on the x-axis, which allows researchers to see differential expression and expression levels of multiple genes simultaneously.
+
+condition1 = c(100, 200, 300, 400, 500)
+condition2 = c(150, 190, 310, 380, 520)
+
+# Calculate M and A
+M = log2(condition2) - log2(condition1)
+A = 0.5 * (log2(condition2) + log2(condition1))
+
+# Basic MA plot using base R
+plot(A, M, main = "MA Plot", xlab = "A (Mean Average)", ylab = "M (Log Ratio)", pch = 19, col = "blue")
+abline(h = 0, col = "red")
+# NOTE: M and A: Calculations for the MA plot.
+        plot(): Plotting A against M.
+        abline(): Adding a horizontal line at M = 0.
+
+ggplot2 for Advanced Plotting
+install.packages("ggplot2")
+library(ggplot2)
+
+# NOTE: dplyr uses %>% for wrapping additional text while, ggplot uses +
+
+data(iris)
+View(iris)
+names(iris)
+ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+  geom_point() +
+  labs(title = "Scatter plot for IRIS dataset", x = "Length", y = "Width")
+# NOTE: aes(): Aesthetic mappings.
+        geom_point(): Scatter plot.
+        labs(): Labels and title.
+
+Boxplot
+data(cars)
+boxplot(cars$speed, col = "red")
+
+Histogram
+hist(cars$speed, col = "cyan", breaks = 25)
+
+Barplot
+barplot(table(cars$speed), col = "red")
+
+# NOTE: boxplot(): Creates a box plot.
+        hist(): Creates a histogram.
+        barplot(): Creates a bar plot.
