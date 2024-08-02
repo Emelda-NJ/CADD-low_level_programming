@@ -1,10 +1,13 @@
-ggplot2 and Basic Plotting in R
-ggplot2 is a widely-used package for creating sophisticated and customizable visualizations using a grammar of graphics approach:
+Data Visualization in R
+Basic Plotting in R and ggplot2
+Data visualization is a critical aspect of data analysis in R. Let's discuss different types of plots and visualization techniques using both base R and the ggplot2 package.
 
 install.packages("ggplot2")
 install.packages("fansi")
 library(fansi)
 library(ggplot2)
+
+## Base R Graphics
 
 Basic Plots
 x = c(11, 22, 33, 44, 55, 66, 77, 88, 99)
@@ -74,22 +77,6 @@ abline(h = 0, col = "red")
         plot(): Plotting A against M.
         abline(): Adding a horizontal line at M = 0.
 
-ggplot2 for Advanced Plotting
-install.packages("ggplot2")
-library(ggplot2)
-
-# NOTE: dplyr uses %>% for wrapping additional text while, ggplot uses +
-
-data(iris)
-View(iris)
-names(iris)
-ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
-  geom_point() +
-  labs(title = "Scatter plot for IRIS dataset", x = "Length", y = "Width")
-# NOTE: aes(): Aesthetic mappings.
-        geom_point(): Scatter plot.
-        labs(): Labels and title.
-
 Boxplot
 data(cars)
 boxplot(cars$speed, col = "red")
@@ -103,3 +90,21 @@ barplot(table(cars$speed), col = "red")
 # NOTE: boxplot(): Creates a box plot.
         hist(): Creates a histogram.
         barplot(): Creates a bar plot.
+
+## ggplot2 for Advanced Plotting
+
+install.packages("ggplot2")
+library(ggplot2)
+
+Scatter Plot
+data(iris)
+View(iris)
+names(iris)
+ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+  geom_point() +
+  labs(title = "Scatter plot for IRIS dataset", x = "Length", y = "Width")
+
+# NOTE: dplyr uses %>% for wrapping additional text while, ggplot uses +
+# NOTE: aes(): Aesthetic mappings.
+        geom_point(): Scatter plot.
+        labs(): Labels and title.
