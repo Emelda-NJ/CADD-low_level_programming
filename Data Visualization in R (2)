@@ -1,0 +1,221 @@
+Data Visualization in R
+Data visualization is a critical aspect of data analysis in R. Let's discuss different types of plots and visualization techniques using both base R and the ggplot2 package.
+ggplot2 is a widely-used package for creating sophisticated and customizable visualizations using a grammar of graphics approach
+#ggplot-Grammer of Graphics, layered Approach, Declarative Syntax, Extensibility, Faceting, themes and customization.
+Grammar of Graphics: ggplot2 is based on a layered approach to creating graphics. Each layer adds a different component, such as data, aesthetics, and geometric objects.
+Layered Approach: Start with a base plot, then add layers such as points, lines, and text.
+Declarative Syntax: Describe what you want to achieve rather than how to draw it.
+Extensibility: Easily extend ggplot2 plots with additional layers, themes, and custom functions.
+Faceting: Create multiple plots based on subsets of the data.
+Themes and Customization: Extensive options to customize the appearance of plots.
+
+Setting Up the Environment
+Before we start with visualizations, ensure you have the necessary packages installed:
+install.packages("ggplot2")
+install.packages("FactoMineR")
+install.packages("factoextra")
+
+Base R Graphics
+Base R provides simple and quick ways to visualize data. Below are some examples using base R.
+
+1. Line Plot:
+# Sample Data
+patient_id <- 1:10
+bp_before <- c(140, 138, 150, 145, 160, 152, 147, 148, 149, 155)
+bp_after <- c(130, 135, 145, 140, 150, 148, 143, 140, 145, 148)
+data <- data.frame(patient_id, bp_before, bp_after)
+data
+# Output:
+   patient_id bp_before bp_after
+1           1       140      130
+2           2       138      135
+3           3       150      145
+4           4       145      140
+5           5       160      150
+6           6       152      148
+7           7       147      143
+8           8       148      140
+9           9       149      145
+10         10       155      148
+
+# Line Plot
+plot(data$patient_id, data$bp_before, type="o", col="blue", xlab="Patient ID", ylab="Blood Pressure", main="Blood Pressure Before and After Treatment")
+lines(data$patient_id, data$bp_after, type="o", col="red")
+legend("topright", legend=c("Before", "After"), col=c("blue", "red"), lty=1)
+
+# NOTE: data$patient_id: X-axis values (patient IDs).
+        data$bp_before: Y-axis values (blood pressure before treatment).
+        type="o": Plot type (both points and lines).
+        lines(): Adds a line to an existing plot
+        legend(): Adds a legend to the plot.
+        "topright": Position of the legend.
+        legend=c("Before", "After"): Text labels for the legend.
+        col=c("blue", "red"): Colors for the legend items.
+        lty=1: Line type for the legend items.
+
+2. Scatter Plot:
+# Scatter Plot
+data(iris)
+View(iris)
+plot(iris$Sepal.Length, iris$Sepal.Width, col=iris$Species, main="Iris Sepal Dimensions", xlab="Sepal Length", ylab="Sepal Width")
+
+ggplot2 Package
+ggplot2 is a powerful package for creating more advanced visualizations using a grammar of graphics. It allows for more customization and flexibility.
+
+1. Scatter Plot:
+library(ggplot2)
+ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+  geom_point() + 
+  labs(title = "Scatter Plot of Iris Dataset", x = "Sepal Length", y = "Sepal Width")
+
+# NOTE: aes(x = Sepal.Length, y = Sepal.Width, color = Species): Aesthetic mappings.
+        x = Sepal.Length: X-axis variable.
+        y = Sepal.Width: Y-axis variable.
+        color = Species: Color points by species.
+        geom_point(): Adds a scatter plot layer.
+        labs(): Adds labels and titles
+
+2. Bar Plot:
+# Assuming sales_data.csv is loaded
+sales_data <- read.csv("sales_data.csv")
+head(sales_data)
+
+ggplot(sales_data, aes(x = Product, y = Sales, fill = Product)) +
+  geom_bar(stat = "identity", width = 0.7) +
+  labs(title = "Sales by Product", x = "Product", y = "Sales") +
+  theme_minimal()
+
+# NOTE: read.csv("sales_data.csv"): Reads data from a CSV file.
+        head(sales_data): Displays the first few rows of the data.
+        ggplot(sales_data, aes(x = Product, y = Sales, fill = Product)): Initializes a ggplot object.
+        x = Product: X-axis variable.
+        y = Sales: Y-axis variable.
+        fill = Product: Fill color based on the product.
+        geom_bar(stat = "identity", width = 0.7): Adds a bar plot layer.
+        stat = "identity": Uses the values as they are.
+        width = 0.7: Width of the bars.
+        labs(title = "Sales by Product", x = "Product", y = "Sales"): Adds labels and titles.
+        theme_minimal(): Applies a minimal theme to the plot.
+
+# NOTE: When creating a bar plot with ggplot2 using geom_bar(), the stat parameter specifies how the data should be summarized. Here are the available stat options and their functions:
+stat = "count"
+Function: This is the default option. It counts the number of occurrences for each category and plots the counts as bars.Example: Plotting the number of occurrences of each species in the iris dataset.
+Use Case: Suitable for categorical data where you want to visualize the frequency of each category.
+Example: Plotting the number of occurrences of each species in the iris dataset.
+ggplot(data = iris, aes(x = Species)) +
+  geom_bar(stat = "count")
+stat = "identity"
+Function: This option uses the actual values in the data without any transformation. It is used when you already have summarized data (e.g., counts, means) and you want to plot these values directly.
+Use Case: Suitable for pre-summarized data where the y-values are already calculated.
+Example: Plotting sales data where the y-values represent sales numbers.
+ggplot(data = sales_data, aes(x = Product, y = Sales)) +
+  geom_bar(stat = "identity")
+stat = "bin"
+Function: This option is typically used for histograms, where data is divided into bins, and the count of data points in each bin is plotted as bars.
+Use Case: Useful for continuous data where you want to visualize the distribution of data points across intervals.
+Example: Plotting the distribution of Sepal.Length in the iris dataset.
+ggplot(data = iris, aes(x = Sepal.Length)) +
+  geom_bar(stat = "bin")
+stat = "summary"
+Function: This option allows you to apply a summary function to the y-values before plotting. By default, it calculates the mean of the y-values, but you can specify other summary functions such as sum, median, etc.
+Use Case: Useful for continuous data where you want to plot a summarized statistic for each category.
+Example: Plotting the mean Sepal.Length for each species.
+ggplot(data = iris, aes(x = Species, y = Sepal.Length)) +
+  geom_bar(stat = "summary", fun = "mean")
+stat = "identity" with position = "dodge"
+Function: This option is useful when you want to plot grouped bar plots, where each group has multiple bars representing different categories.
+Use Case: Suitable for data where you want to compare multiple categories within groups.
+Example: Plotting sales data with bars representing different regions for each product.
+ggplot(data = sales_data, aes(x = Product, y = Sales, fill = Region)) +
+  geom_bar(stat = "identity", position = "dodge")
+
+
+3. Box Plot:
+# Assuming test_scores.csv is loaded
+test_scores <- read.csv("test_scores.csv")
+head(test_scores)
+
+ggplot(test_scores, aes(x = Class, y = Score, fill = Class)) +
+  geom_boxplot() +
+  labs(title = "Test Scores by Class", x = "Class", y = "Score") +
+  theme_minimal()
+# NOTE: fill = Class: Fill color based on the class.
+        geom_boxplot(): Adds a box plot layer.
+
+4. PCA(Principal Component Analysis) Plot:
+It is a statistical technique used for dimensionality reduction, which transforms a large set of variables into a smaller one that still contains most of the information in the large set.
+PCA achieves this by identifying the directions (principal components) in which the variation in the data is maximal.
+
+library(FactoMineR)
+library(factoextra)
+data("iris")
+data <- iris[, 1:4]
+
+# Perform PCA
+pca_res <- prcomp(data, scale. = TRUE)
+
+# NOTE: data <- iris[, 1:4]: Selects the first four columns of the iris dataset.
+        prcomp(data, scale. = TRUE): Performs PCA.
+        data: The data frame to perform PCA on.
+        scale. = TRUE: Scales the data before performing PCA.
+
+# Extract PCA results
+pca_df <- as.data.frame(pca_res$x)
+pca_df$Species <- iris$Species
+
+# Plot PCA
+ggplot(pca_df, aes(x = PC1, y = PC2, color = Species)) +
+  geom_point(size = 2) +
+  labs(title = "PCA Plot", x = "PC1", y = "PC2") +
+  theme_minimal()
+
+# NOTE: as.data.frame(pca_res$x): Converts PCA results to a data frame.
+        pca_df$Species <- iris$Species: Adds the species column to the PCA results.
+        ggplot(pca_df, aes(x = PC1, y = PC2, color = Species)): Initializes a ggplot object.
+        x = PC1: X-axis variable (first principal component).
+        y = PC2: Y-axis variable (second principal component).
+        color = Species: Color points by species.
+        geom_point(size = 2): Adds a scatter plot layer.
+        size = 2: Size of the points.
+        labs(title = "PCA Plot", x = "PC1", y = "PC2"): Adds labels and titles.
+        theme_minimal(): Applies a minimal theme to the plot.
+
+5. Heatmap:
+set.seed(123)
+data <- matrix(rnorm(25), ncol = 5)
+rownames(data) <- c("Gene1", "Gene2", "Gene3", "Gene4", "Gene5")
+colnames(data) <- c("Sample1", "Sample2", "Sample3", "Sample4", "Sample5")
+# Base R Heatmap
+heatmap(data)
+
+# NOTE: set.seed(123): Sets the seed for reproducibility.
+        matrix(rnorm(25), ncol = 5): Creates a 5x5 matrix of random numbers.
+        rownames(data): Sets row names for the matrix.
+        colnames(data): Sets column names for the matrix.
+        heatmap(data): Creates a heatmap of the data.
+
+# Custom Colors
+my_color <- colorRampPalette(c("cyan", "darkgreen"))
+heatmap(data, col = my_color(100))
+# NOTE: colorRampPalette(c("cyan", "darkgreen")): Creates a color palette from cyan to dark green
+
+# Heatmap using ggplot2
+ggplot(data = as.data.frame(as.table(data)), aes(x = Var2, y = Var1, fill = Freq)) +
+  geom_tile() +
+  labs(title = "Heatmap", fill = "Expression Level") +
+  theme_minimal() +
+  theme(axis.text = element_text(angle = 45, hjust = 1))
+
+# NOTE: as.table(data): Converts the matrix data into a table. This creates a long-format table where each cell of the matrix is represented as a row with three columns: the row name (Var1), the column name (Var2), and the value of the cell (Freq).
+as.data.frame(): Converts the table into a data frame suitable for use with ggplot2.
+aes(x = Var2, y = Var1, fill = Freq): Specifies the aesthetic mappings:
+x = Var2: The column names of the matrix as the x-axis variable.
+y = Var1: The row names of the matrix as the y-axis variable.
+fill = Freq: The values of the matrix cells as the fill color of the tiles.
+geom_tile(): Adds a tile layer to the plot. Each tile represents a cell in the original matrix, with its color determined by the fill aesthetic mapping.
+labs(): Adds labels and a title to the plot.
+title = "Heatmap": Sets the title of the plot.
+fill = "Expression Level": Sets the label for the fill legend, indicating that the colors represent expression levels.
+theme_minimal(): Applies a minimal theme to the plot. This theme removes background grids and borders, making the plot look cleaner and less cluttered.
+theme(): Customizes the appearance of the plot.
+axis.text = element_text(angle = 45, hjust = 1): Rotates the axis text by 45 degrees and horizontally justifies it to the right. This is useful for long or overlapping text labels on the x-axis, making them easier to read.
