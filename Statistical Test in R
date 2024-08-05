@@ -1,0 +1,99 @@
+Statistical methods are fundamental in bioinformatics for analyzing biological data, identifying patterns, and making inferences.
+
+Statistical Test
+Statistical tests are used to determine if there is a significant difference between groups or conditions. Common tests include:
+t-test, ANOVA, Chi-square, z-test
+
+t-test
+The t-test assesses whether the means of two groups are statistically different from each other.
+# Sample data
+control_1 <- c(5.2, 4.8, 5.0, 5.5, 5.4)
+treated <- c(5.4, 3.8, 4.5, 5.5, 5.4)
+# Perform t-test
+t.test(control_1, treated)
+
+# Generate sample data for group 1 and group 2
+group_1 <- rnorm(30, mean = 5, sd = 2)
+group_2 <- rnorm(30, mean = 6, sd = 2)
+# Perform t-test to compare the means of group 1 and group 2
+t.test(group_1, group_2)
+
+# NOTE: rnorm(30, mean = 5, sd = 2): Generates 30 random numbers from a normal distribution with a mean of 5 and a standard deviation of 2.
+        t.test(group_1, group_2): Performs a t-test to compare the means of group_1 and group_2
+
+ANOVA (Analysis of Variance)
+ANOVA is used to compare means across three or more groups.
+# Generate sample data
+group_1 <- rnorm(30, mean = 5, sd = 2)
+group_2 <- rnorm(30, mean = 6, sd = 2)
+group_3 <- rnorm(30, mean = 7, sd = 2)
+
+# Combine data into a data frame
+data <- data.frame(
+  values = c(group_1, group_2, group_3),
+  group = factor(rep(1:3, each = 30))
+)
+
+# Perform ANOVA to compare the means of the groups
+anova_result <- aov(values ~ group, data = data)
+summary(anova_result)
+# NOTE: aov(values ~ group, data = data): Performs ANOVA to compare the means of the groups.
+
+Chi-square Test
+The Chi-square test is used to determine if there is a significant association between categorical variables.
+# Observed frequency matrix
+observed <- matrix(c(10, 20, 30, 40), nrow = 2)
+
+# Perform Chi-square test
+chisq.test(observed)
+# NOTE: matrix(c(10, 20, 30, 40), nrow = 2): Creates a 2x2 matrix of observed frequencies.
+        chisq.test(observed): Performs a Chi-square test on the observed frequency matrix.
+
+z-test
+The z-test is used to determine if there is a significant difference between the means of two groups when the population variances are known and the sample size is large.
+install.packages("BSDA")
+library(BSDA)
+
+# Generate sample data
+group_1 <- rnorm(30, mean = 5, sd = 2)
+group_2 <- rnorm(30, mean = 6, sd = 2)
+
+# Perform z-test to compare the means of group 1 and group 2
+z.test(group_1, group_2, sigma.x = 2, sigma.y = 2)
+
+# GENERAL NOTES:
+Statistical significance is a determination made by a hypothesis test that an observed effect in a dataset is unlikely to have occurred due to chance alone. 
+It is often used to reject or fail to reject a null hypothesis based on the data collected.
+
+Null Hypothesis (H₀): The null hypothesis is a statement that there is no effect, no difference, or no relationship between variables. 
+It serves as a default or baseline assumption that any observed pattern is due to random chance rather than a real effect.
+
+Observed Pattern: This refers to the actual data or results obtained from an experiment or study. 
+For example, this could be the difference in means between two groups, the correlation between two variables, or the proportion of successes in a sample.
+
+P-Value: The p-value quantifies the probability of obtaining the observed results, or something more extreme, assuming that the null hypothesis is true. 
+It helps determine whether the observed pattern is likely to have occurred by chance. It is a measure used to determine the strength of the evidence against the null hypothesis.
+
+The standard p-value threshold, often used in many fields, is 0.05. This means that if the p-value is less than 0.05, the results are considered statistically significant.
+Significance Level (α): The threshold at which you reject the null hypothesis. Common significance levels are 0.05, 0.01, and 0.10.
+
+Decision Based on P-Value and Significance Level
+P-Value < Significance Level (α): If the p-value is less than the chosen significance level (commonly 0.05), it indicates that the probability of observing such a pattern purely by chance is very low. 
+This provides strong evidence against the null hypothesis, leading to its rejection. In other words, it suggests that the observed pattern is unlikely to be due to random chance, implying a statistically significant effect or difference.
+
+P-Value ≥ Significance Level (α): If the p-value is greater than or equal to the significance level, it indicates that the observed pattern could reasonably occur by chance. 
+This means there isn't enough evidence to reject the null hypothesis, so we fail to reject it. This doesn't prove that the null hypothesis is true; it simply suggests that the data do not provide strong enough evidence against it.
+
+Hypothesis Testing and Significance Levels
+Null Hypothesis (H₀): The default position that there is no effect or no difference. It is the hypothesis that a researcher tries to disprove or reject.
+Alternative Hypothesis (H₁ or Ha): The hypothesis that there is an effect or a difference. It is what the researcher wants to prove.
+
+Example to Illustrate
+Imagine you are testing a new drug to see if it lowers blood pressure more effectively than a placebo. 
+The null hypothesis (H₀) states that the drug has no effect on blood pressure (i.e., any observed difference is due to random chance).
+
+Conducting the Experiment: You administer the drug to one group and a placebo to another group.
+Observing the Results: You observe a difference in blood pressure reduction between the two groups.
+Calculating the P-Value: Statistical analysis yields a p-value of 0.02.
+Since the p-value (0.02) is less than the significance level (0.05), you reject the null hypothesis. 
+This means you have sufficient evidence to conclude that the drug has a statistically significant effect on lowering blood pressure, beyond what would be expected by random chance.
